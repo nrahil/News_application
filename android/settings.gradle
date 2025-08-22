@@ -18,8 +18,10 @@ pluginManagement {
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "7.3.0" apply false
-    id "org.jetbrains.kotlin.android" version "1.7.10" apply false
+    // Updated the Android Gradle Plugin (AGP) version to match the project build.gradle.
+    id "com.android.application" version "8.4.1" apply false
+    // Most importantly, updated the Kotlin plugin version to match the Kotlin standard library (1.9.24).
+    id "org.jetbrains.kotlin.android" version "1.9.24" apply false
 }
 
 include ":app"
