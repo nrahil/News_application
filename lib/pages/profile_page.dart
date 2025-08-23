@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/saved_articles_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatelessWidget {
   final void Function(bool) onToggleTheme;
-  final bool isDark; // This is now a required parameter
+  final bool isDark;
 
-  const ProfilePage({super.key, required this.onToggleTheme, required this.isDark});
+  const ProfilePage(
+      {super.key, required this.onToggleTheme, required this.isDark});
 
   void _signOut() {
     FirebaseAuth.instance.signOut();
@@ -14,39 +16,52 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final userCredential = FirebaseAuth.instance.currentUser;
-    final userName = userCredential?.displayName ?? "User Name";
-    final userEmail = "";
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Profile",
-          style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),
+          style: Theme.of(context)
+              .textTheme
+              .headlineMedium!
+              .copyWith(color: Colors.white),
         ),
-        backgroundColor: isDark ? const Color(0xFF212121) : Theme.of(context).primaryColor,
+        backgroundColor:
+            isDark ? const Color(0xFF212121) : Theme.of(context).primaryColor,
         elevation: 4,
         automaticallyImplyLeading: false,
       ),
       body: ListView(
         children: [
-          _buildHeader(context),
-          const SizedBox(height: 16),
-          _buildOptionTile(
-            context,
-            icon: Icons.person_outline,
-            title: "My Details",
-            onTap: () {
-              // Navigate to My Details page
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => MyDetailsPage()));
+          // Use a StreamBuilder to fetch and display user data
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (!snapshot.hasData || !snapshot.data!.exists) {
+                return _buildHeader(context,
+                    userName: "User Name", userEmail: "user@email.com");
+              }
+              final userData = snapshot.data!.data() as Map<String, dynamic>;
+              return _buildHeader(context,
+                  userName: userData['username'] ?? "User Name",
+                  userEmail: userData['email'] ?? "user@email.com");
             },
           ),
+          const SizedBox(height: 16),
           _buildOptionTile(
             context,
             icon: Icons.bookmark_border,
             title: "Saved Articles",
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedArticlesPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SavedArticlesPage()));
             },
           ),
           _buildOptionTile(
@@ -75,10 +90,13 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    // isDark is available as a class property
-    final headerTextColor = isDark ? Colors.white : Theme.of(context).textTheme.bodySmall!.color;
-    final emailTextColor = isDark ? Colors.grey : Theme.of(context).textTheme.bodySmall!.color;
+  Widget _buildHeader(BuildContext context,
+      {required String userName, required String userEmail}) {
+    // This is now a separate function to build the header with the fetched data
+    final headerTextColor =
+        isDark ? Colors.white : Theme.of(context).textTheme.bodySmall!.color;
+    final emailTextColor =
+        isDark ? Colors.grey : Theme.of(context).textTheme.bodySmall!.color;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -86,13 +104,19 @@ class ProfilePage extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "User Name",
-            style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: headerTextColor),
+            userName,
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(color: headerTextColor),
           ),
           const SizedBox(height: 4),
           Text(
-            "user@email.com",
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: emailTextColor),
+            userEmail,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(color: emailTextColor),
           ),
         ],
       ),
@@ -100,13 +124,13 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildOptionTile(
-      BuildContext context, {
-      required IconData icon,
-      required String title,
-      required VoidCallback onTap,
-      }) {
-    // isDark is available as a class property
-    final iconColor = isDark ? Theme.of(context).hintColor : Theme.of(context).primaryColor;
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    final iconColor =
+        isDark ? Theme.of(context).hintColor : Theme.of(context).primaryColor;
     final trailingIconColor = isDark ? Colors.grey[600] : Colors.grey;
 
     return Card(
@@ -123,15 +147,15 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildToggleTile(
-      BuildContext context, {
-      required IconData icon,
-      required String title,
-      required bool value,
-      required ValueChanged<bool> onChanged,
-      }) {
-    // isDark is available as a class property
-    final iconColor = isDark ? Theme.of(context).hintColor : Theme.of(context).primaryColor;
-    
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    final iconColor =
+        isDark ? Theme.of(context).hintColor : Theme.of(context).primaryColor;
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       color: Theme.of(context).cardColor,
