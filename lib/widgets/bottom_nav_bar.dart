@@ -5,13 +5,15 @@ class BottomNavBar extends StatelessWidget {
   final Function(int) onItemTapped;
 
   const BottomNavBar({
-    super.key,
+    Key? key,
     required this.selectedIndex,
     required this.onItemTapped,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -28,10 +30,10 @@ class BottomNavBar extends StatelessWidget {
         ),
       ],
       currentIndex: selectedIndex,
-      selectedItemColor: Theme.of(context).colorScheme.secondary,
-      unselectedItemColor: Colors.grey[700],
+      selectedItemColor: Theme.of(context).hintColor,
+      unselectedItemColor: isDark ? Colors.grey[700] : Colors.grey,
       onTap: onItemTapped,
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
       elevation: 8,
       showUnselectedLabels: true,
     );

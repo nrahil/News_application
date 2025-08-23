@@ -6,19 +6,20 @@ class CategoryTabs extends StatelessWidget {
   final void Function(String) onCategorySelected;
 
   const CategoryTabs({
-    super.key,
+    Key? key,
     required this.categories,
     required this.selectedCategory,
     required this.onCategorySelected,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
       height: 40,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
@@ -32,22 +33,22 @@ class CategoryTabs extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-                  border: isSelected ? null : Border.all(color: Theme.of(context).primaryColor),
+                  border: isSelected ? null : Border.all(color: isDark ? Colors.white : Theme.of(context).primaryColor),
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: Theme.of(context).primaryColor.withOpacity(0.4),
+                            color: isDark ? Theme.of(context).hintColor.withOpacity(0.4) : Theme.of(context).primaryColor.withOpacity(0.4),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
                         ]
                       : null,
                 ),
-                child: Center( // Added Center widget for better text alignment
+                child: Center(
                   child: Text(
                     category,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: isSelected ? Colors.white : Theme.of(context).primaryColor,
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : Theme.of(context).primaryColor),
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),

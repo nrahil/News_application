@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const CustomAppBar({super.key, required this.title});
+  const CustomAppBar({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return AppBar(
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+        style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),
       ),
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: isDark ? const Color(0xFF212121) : Theme.of(context).primaryColor,
       elevation: 4,
       centerTitle: false,
     );
