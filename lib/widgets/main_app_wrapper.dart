@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/home_page.dart';
 import 'package:news_app/pages/explore_page.dart';
@@ -7,7 +6,10 @@ import 'package:news_app/pages/profile_page.dart';
 import 'package:news_app/widgets/bottom_nav_bar.dart';
 
 class MainAppWrapper extends StatefulWidget {
-  const MainAppWrapper({Key? key}) : super(key: key);
+  final void Function(bool) onToggleTheme;
+  final bool isDark;
+
+  const MainAppWrapper({Key? key, required this.onToggleTheme, required this.isDark}) : super(key: key);
 
   @override
   _MainAppWrapperState createState() => _MainAppWrapperState();
@@ -16,7 +18,6 @@ class MainAppWrapper extends StatefulWidget {
 class _MainAppWrapperState extends State<MainAppWrapper> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
-  ThemeMode _themeMode = ThemeMode.light;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -27,12 +28,6 @@ class _MainAppWrapperState extends State<MainAppWrapper> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
-  }
-
-  void toggleTheme(bool isDark) {
-    setState(() {
-      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-    });
   }
 
   @override
@@ -59,8 +54,8 @@ class _MainAppWrapperState extends State<MainAppWrapper> {
             );
           }),
           ProfilePage(
-            onToggleTheme: toggleTheme,
-            isDark: _themeMode == ThemeMode.dark,
+            onToggleTheme: widget.onToggleTheme,
+            isDark: widget.isDark,
           ),
         ],
       ),

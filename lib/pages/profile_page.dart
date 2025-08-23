@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/saved_articles_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class ProfilePage extends StatelessWidget {
   final void Function(bool) onToggleTheme;
-  final bool isDark;
+  final bool isDark; // This is now a required parameter
 
   const ProfilePage({super.key, required this.onToggleTheme, required this.isDark});
 
+  void _signOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final userCredential = FirebaseAuth.instance.currentUser;
+    final userName = userCredential?.displayName ?? "User Name";
+    final userEmail = "";
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -59,10 +68,7 @@ class ProfilePage extends StatelessWidget {
             context,
             icon: Icons.logout,
             title: "Log Out",
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              
-            },
+            onTap: _signOut,
           ),
         ],
       ),
@@ -70,20 +76,23 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    // isDark is available as a class property
+    final headerTextColor = isDark ? Colors.white : Theme.of(context).textTheme.bodySmall!.color;
+    final emailTextColor = isDark ? Colors.grey : Theme.of(context).textTheme.bodySmall!.color;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       color: Theme.of(context).cardColor,
       child: Column(
         children: [
-          // Text-based header instead of an image
           Text(
             "User Name",
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: headerTextColor),
           ),
           const SizedBox(height: 4),
           Text(
             "user@email.com",
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: emailTextColor),
           ),
         ],
       ),
@@ -96,6 +105,7 @@ class ProfilePage extends StatelessWidget {
       required String title,
       required VoidCallback onTap,
       }) {
+    // isDark is available as a class property
     final iconColor = isDark ? Theme.of(context).hintColor : Theme.of(context).primaryColor;
     final trailingIconColor = isDark ? Colors.grey[600] : Colors.grey;
 
@@ -119,6 +129,7 @@ class ProfilePage extends StatelessWidget {
       required bool value,
       required ValueChanged<bool> onChanged,
       }) {
+    // isDark is available as a class property
     final iconColor = isDark ? Theme.of(context).hintColor : Theme.of(context).primaryColor;
     
     return Card(
