@@ -18,6 +18,7 @@ class CategoryTabs extends StatelessWidget {
       height: 40,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];

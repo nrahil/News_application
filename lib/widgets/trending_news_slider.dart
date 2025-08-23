@@ -25,6 +25,7 @@ class TrendingNewsSlider extends StatelessWidget {
       ),
       items: news.map((article) {
         return Builder(
+          
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () => onSelect(article),

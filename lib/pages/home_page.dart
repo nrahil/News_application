@@ -20,8 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   List<NewsArticle> getNewsForCategory(String category) {
     if (category == 'All') {
-      // Exclude trending news from the main list
-      return allNews.where((article) => !article.imageUrl.contains('600x400')).toList();
+      return allNews.where((article) => !article.isTrending).toList();
     }
     return allNews.where((article) => article.category == category).toList();
   }
@@ -29,11 +28,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // Filter for trending news items to be passed to the slider
-    final trendingNews = allNews.where((article) => article.imageUrl.contains('600x400')).toList();
+    final trendingNews = allNews.where((article) => article.isTrending).toList();
     final newsToDisplay = getNewsForCategory(selectedCategory);
 
     return Scaffold(
-      appBar: const CustomAppBar(title: "Daily Brief"),
+      appBar: const CustomAppBar(title: "NewsApp"),
       body: SingleChildScrollView(
         child: Column(
           children: [
