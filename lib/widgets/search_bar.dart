@@ -42,26 +42,28 @@ class _SearchBarState extends State<SearchBar> {
           onSubmitted: (query) => widget.onSearch(query),
           decoration: InputDecoration(
             hintText: "Search for news...",
-            prefixIcon: const Icon(Icons.search),
+            hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+            prefixIcon: const Icon(Icons.search, color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
               borderSide: BorderSide.none,
             ),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: Theme.of(context).cardColor,
             contentPadding: const EdgeInsets.all(10),
           ),
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         if (_controller.text.isNotEmpty && filteredSuggestions.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.black.withOpacity(0.2),
                     spreadRadius: 2,
                     blurRadius: 5,
                     offset: const Offset(0, 3),
@@ -74,7 +76,7 @@ class _SearchBarState extends State<SearchBar> {
                 itemBuilder: (context, index) {
                   final suggestion = filteredSuggestions[index];
                   return ListTile(
-                    title: Text(suggestion),
+                    title: Text(suggestion, style: Theme.of(context).textTheme.bodyLarge),
                     onTap: () {
                       _controller.text = suggestion;
                       widget.onSearch(suggestion);

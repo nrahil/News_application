@@ -9,7 +9,7 @@ import 'package:news_app/widgets/news_card.dart';
 class HomePage extends StatefulWidget {
   final void Function(NewsArticle) onArticleSelect;
 
-  const HomePage({super.key, required this.onArticleSelect});
+  const HomePage({Key? key, required this.onArticleSelect}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,14 +20,16 @@ class _HomePageState extends State<HomePage> {
 
   List<NewsArticle> getNewsForCategory(String category) {
     if (category == 'All') {
-      return allNews.where((article) => !article.imageUrl.contains('Trending')).toList();
+      // Exclude trending news from the main list
+      return allNews.where((article) => !article.imageUrl.contains('600x400')).toList();
     }
     return allNews.where((article) => article.category == category).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final trendingNews = allNews.where((article) => article.imageUrl.contains('Trending')).toList();
+    // Filter for trending news items to be passed to the slider
+    final trendingNews = allNews.where((article) => article.imageUrl.contains('600x400')).toList();
     final newsToDisplay = getNewsForCategory(selectedCategory);
 
     return Scaffold(
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Pass the trendingNews list to the slider
             TrendingNewsSlider(news: trendingNews, onSelect: widget.onArticleSelect),
             const SizedBox(height: 16),
             CategoryTabs(
@@ -55,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () => widget.onArticleSelect(article),
                 ),
               );
-            }),
+            }).toList(),
           ],
         ),
       ),

@@ -28,9 +28,12 @@ class BottomNavBar extends StatelessWidget {
         ),
       ],
       currentIndex: selectedIndex,
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(context).colorScheme.secondary,
+      unselectedItemColor: Colors.grey[700],
       onTap: onItemTapped,
+      backgroundColor: Colors.white,
+      elevation: 8,
+      showUnselectedLabels: true,
     );
   }
 }
