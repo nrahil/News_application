@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/saved_articles_page.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 class ProfilePage extends StatelessWidget {
   final void Function(bool) onToggleTheme;
   final bool isDark;
 
-  const ProfilePage({Key? key, required this.onToggleTheme, required this.isDark}) : super(key: key);
+  const ProfilePage({super.key, required this.onToggleTheme, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +15,9 @@ class ProfilePage extends StatelessWidget {
           "Profile",
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),
         ),
-        // This is the updated line to make the app bar dark in dark mode
         backgroundColor: isDark ? const Color(0xFF212121) : Theme.of(context).primaryColor,
         elevation: 4,
-        automaticallyImplyLeading: false, // Prevents back button on this page
+        automaticallyImplyLeading: false,
       ),
       body: ListView(
         children: [
@@ -60,8 +59,9 @@ class ProfilePage extends StatelessWidget {
             context,
             icon: Icons.logout,
             title: "Log Out",
-            onTap: () {
-              // Implement log out logic
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              
             },
           ),
         ],
@@ -70,28 +70,20 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    final headerTextColor = isDark ? Colors.white : Theme.of(context).textTheme.bodySmall!.color;
-    final emailTextColor = isDark ? Colors.grey : Theme.of(context).textTheme.bodySmall!.color;
-
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       color: Theme.of(context).cardColor,
       child: Column(
         children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: isDark ? Colors.grey[700] : Colors.grey,
-            child: const Icon(Icons.person, size: 50, color: Colors.white),
-          ),
-          const SizedBox(height: 10),
+          // Text-based header instead of an image
           Text(
             "User Name",
-            style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: headerTextColor),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 4),
           Text(
             "user@email.com",
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: emailTextColor),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

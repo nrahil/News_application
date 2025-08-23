@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart' as carousel hide CarouselController;
+import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import 'package:news_app/models/news_article.dart';
 
 class TrendingNewsSlider extends StatelessWidget {

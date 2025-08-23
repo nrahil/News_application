@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class SavedArticlesPage extends StatelessWidget {
-  const SavedArticlesPage({Key? key}) : super(key: key);
+  const SavedArticlesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
