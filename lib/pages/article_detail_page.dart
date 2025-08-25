@@ -15,13 +15,15 @@ class ArticleDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.white),
       ),
-      extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,25 +36,37 @@ class ArticleDetailPage extends StatelessWidget {
                   height: 300,
                   width: double.infinity,
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
+                Positioned.fill(
                   child: Container(
-                    padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.9),
+                          Colors.black.withOpacity(0.8),
                         ],
+                        stops: const [0.6, 1.0],
                       ),
                     ),
-                    child: Text(
-                      article.title,
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(color: Colors.white),
+                  ),
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
+                  child: Text(
+                    article.title,
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: Colors.white,
+                      fontSize: 24,
+                      shadows: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -65,23 +79,26 @@ class ArticleDetailPage extends StatelessWidget {
                 children: [
                   Text(
                     article.description ?? "No description available.",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
                   if (article.sourceUrl != null)
-                    ElevatedButton(
-                      onPressed: () => _launchUrl(article.sourceUrl!),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size.fromHeight(50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        onPressed: () => _launchUrl(article.sourceUrl!),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "Read Full Article",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                        child: const Text(
+                          "Read More",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                 ],

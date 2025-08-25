@@ -7,7 +7,7 @@ class AuthChecker extends StatelessWidget {
   final void Function(bool) onToggleTheme;
   final bool isDark;
 
-  const AuthChecker({Key? key, required this.onToggleTheme, required this.isDark}) : super(key: key);
+  const AuthChecker({super.key, required this.onToggleTheme, required this.isDark});
 
   @override
   Widget build(BuildContext context) {

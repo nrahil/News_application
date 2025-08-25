@@ -9,7 +9,7 @@ class MainAppWrapper extends StatefulWidget {
   final void Function(bool) onToggleTheme;
   final bool isDark;
 
-  const MainAppWrapper({Key? key, required this.onToggleTheme, required this.isDark}) : super(key: key);
+  const MainAppWrapper({super.key, required this.onToggleTheme, required this.isDark});
 
   @override
   _MainAppWrapperState createState() => _MainAppWrapperState();

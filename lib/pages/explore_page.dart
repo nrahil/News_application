@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/dummy_data.dart';
 import 'package:news_app/models/news_article.dart';
+import 'package:news_app/data/news_data.dart'; // Import your news service
 import 'package:news_app/widgets/custom_app_bar.dart';
 import 'package:news_app/widgets/search_bar.dart' as custom_widgets;
 import 'package:news_app/widgets/news_card.dart';
@@ -15,21 +15,21 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  List<NewsArticle> searchResults = [];
+  // Use a Future to hold the results of the API call
+  Future<List<NewsArticle>>? _futureSearchResults;
+  List<String> _suggestions = ['SpaceX', 'Politics', 'Sports', 'AI', 'Business'];
 
   void onSearch(String query) {
-    if (query.isEmpty) {
+    if (query.isNotEmpty) {
       setState(() {
-        searchResults = [];
+        _futureSearchResults = fetchNewsBySearch(query);
       });
-      return;
+    } else {
+      // Clear results if the search query is empty
+      setState(() {
+        _futureSearchResults = null;
+      });
     }
-    setState(() {
-      searchResults = allNews.where((article) =>
-          article.title.toLowerCase().contains(query.toLowerCase()) ||
-          (article.subtitle != null && article.subtitle!.toLowerCase().contains(query.toLowerCase()))
-      ).toList();
-    });
   }
 
   @override
@@ -43,10 +43,11 @@ class _ExplorePageState extends State<ExplorePage> {
             children: [
               custom_widgets.SearchBar(
                 onSearch: onSearch,
-                suggestions: allNews.map((e) => e.title).toList(),
+                suggestions: _suggestions,
               ),
               const SizedBox(height: 16),
-              if (searchResults.isEmpty)
+              // Use FutureBuilder to display results from the API
+              if (_futureSearchResults == null)
                 const Padding(
                   padding: EdgeInsets.only(top: 50.0),
                   child: Text(
@@ -55,15 +56,30 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
                 )
               else
-                ...searchResults.map((article) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: NewsCard(
-                      article: article,
-                      onTap: () => widget.onArticleSelect(article),
-                    ),
-                  );
-                }),
+                FutureBuilder<List<NewsArticle>>(
+                  future: _futureSearchResults,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      return Column(
+                        children: snapshot.data!.map((article) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: NewsCard(
+                              article: article,
+                              onTap: () => widget.onArticleSelect(article),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    } else {
+                      return const Center(child: Text('No news found for your search.'));
+                    }
+                  },
+                ),
             ],
           ),
         ),
