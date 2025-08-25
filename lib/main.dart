@@ -1,7 +1,9 @@
+// lib/main.dart
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:news_app/main_screen.dart'; // This imports the AuthChecker
-
+import 'package:news_app/main_screen.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -13,7 +15,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -97,7 +99,10 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       themeMode: _themeMode,
-      home: AuthChecker(onToggleTheme: toggleTheme, isDark: _themeMode == ThemeMode.dark),
+      home: AuthChecker(
+        onToggleTheme: toggleTheme,
+        isDark: _themeMode == ThemeMode.dark,
+      ),
     );
   }
 }

@@ -9,7 +9,7 @@ import 'package:news_app/widgets/news_card.dart';
 class HomePage extends StatefulWidget {
   final void Function(NewsArticle) onArticleSelect;
 
-  const HomePage({Key? key, required this.onArticleSelect}) : super(key: key);
+  const HomePage({super. key, required this.onArticleSelect});
 
   @override
   State<HomePage> createState() => _HomePageState();

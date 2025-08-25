@@ -1,22 +1,18 @@
-// lib/pages/authentication_screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-// You will need to add a dependency for a package to pick images if you want to add this feature.
-// import 'dart:io';
-// import 'package:image_picker/image_picker.dart';
-// final firebase = FirebaseAuth.instance;
+import 'package:news_app/data/user_data.dart'; // Correct import
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() {
-    return _LoginPage();
+    return _LoginPageState();
   }
 }
 
-class _LoginPage extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isLogin = true;
@@ -41,27 +37,25 @@ class _LoginPage extends State<LoginPage> {
       setState(() {
         _isLoading = true;
       });
+      UserCredential userCredentials;
       if (_isLogin) {
-        // ignore: unused_local_variable
-        final userCredentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        userCredentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
       } else {
-        // ignore: unused_local_variable
-        final userCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        userCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
-
-        // Save user data to Firestore (without image)
+        // Save user data to Firestore
         await FirebaseFirestore.instance.collection('users').doc(userCredentials.user!.uid).set({
           'username': _enteredUsername,
           'email': _enteredEmail,
         });
       }
       
-      // Navigate to the main app after successful login/signup.
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(builder: (context) => YourMainHomePage()),
-      // );
-      
+      // Fetch and store user data globally after successful auth
+      final userDataDoc = await FirebaseFirestore.instance.collection('users').doc(userCredentials.user!.uid).get();
+      UserData().username = userDataDoc.data()?['username'];
+      UserData().email = userDataDoc.data()?['email'];
+
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -84,7 +78,6 @@ class _LoginPage extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Replaced the image with dynamic text
               Column(
                 children: [
                   Text(

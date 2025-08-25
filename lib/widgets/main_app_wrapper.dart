@@ -12,6 +12,7 @@ class MainAppWrapper extends StatefulWidget {
   const MainAppWrapper({super.key, required this.onToggleTheme, required this.isDark});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MainAppWrapperState createState() => _MainAppWrapperState();
 }
 

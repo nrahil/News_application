@@ -4,7 +4,7 @@ import 'package:news_app/widgets/news_card.dart';
 import 'package:news_app/pages/article_detail_page.dart';
 
 class SavedArticlesPage extends StatelessWidget {
-  const SavedArticlesPage({Key? key}) : super(key: key);
+  const SavedArticlesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -17,7 +17,7 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   // Use a Future to hold the results of the API call
   Future<List<NewsArticle>>? _futureSearchResults;
-  List<String> _suggestions = ['SpaceX', 'Politics', 'Sports', 'AI', 'Business'];
+  final List<String> _suggestions = ['SpaceX', 'Politics', 'Sports', 'AI', 'Business'];
 
   void onSearch(String query) {
     if (query.isNotEmpty) {

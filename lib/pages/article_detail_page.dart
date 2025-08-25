@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:news_app/models/news_article.dart';
-import 'package:news_app/data/saved_articles_data.dart'; // Import the new service
+import 'package:news_app/data/saved_articles_data.dart';
 
 class ArticleDetailPage extends StatefulWidget {
   final NewsArticle article;
@@ -18,7 +18,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       throw 'Could not launch $url';
     }
   }
-  
+
   void _toggleSaveArticle() {
     setState(() {
       if (SavedArticlesService().isArticleSaved(widget.article)) {
@@ -45,12 +45,13 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const BackButton(color: Colors.white),
+        // AppBar icons will now be dynamic
+        leading: BackButton(color: isDark ? Colors.white : Colors.white),
         actions: [
           IconButton(
             icon: Icon(
               isSaved ? Icons.bookmark : Icons.bookmark_border,
-              color: Colors.white,
+              color: isDark ? Colors.white : Colors.white,
             ),
             onPressed: _toggleSaveArticle,
           ),
