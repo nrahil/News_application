@@ -1,6 +1,8 @@
 # news_app
 
 News App
+
+
 A modern news application built with Flutter, providing a dynamic and personalized news-reading experience. Users can browse trending news, search for specific topics, save articles for later reading, and manage their preferences with a seamless user authentication system.
 
 ✨ Features
