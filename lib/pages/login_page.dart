@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
               Column(
                 children: [
                   Text(
-                    'News App',
+                    'News Now',
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       color: isDark ? Colors.white : Colors.white,
                       fontSize: 40,

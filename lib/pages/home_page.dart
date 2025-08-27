@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "NewsApp"),
+      appBar: const CustomAppBar(title: "NewsNow"),
       body: SingleChildScrollView(
         child: Column(
           children: [
