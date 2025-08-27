@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 16),
             FutureBuilder<List<NewsArticle>>(
               future: _futureTrendingNews,
               builder: (context, snapshot) {
