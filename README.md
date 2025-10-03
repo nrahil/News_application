@@ -29,13 +29,13 @@ A modern news application built with Flutter, providing a dynamic and personaliz
 
 <p align="center">
   <img src="screenshots/signup_page.jpg" alt="Signup page" width="250"/>
-  <img src="screenshots/login_page.png" alt="Login page" width="250"/>
-  <img src="screenshots/home_page.png" alt="Home page" width="250"/>
+  <img src="screenshots/login_page.jng" alt="Login page" width="250"/>
+  <img src="screenshots/home_page.jng" alt="Home page" width="250"/>
 </p>
 
 <p align="center">
-  <img src="screenshots/explore_page.png" alt="Explore page" width="250"/>
-  <img src="screenshots/profile_page.png" alt="Profile page" width="250"/>
-  <img src="screenshots/saved_article_page.png" alt="Saved Article page" width="250"/>
-  <img src="screenshots/dark_mode.png" alt="Dark mode" width="250"/>
+  <img src="screenshots/explore_page.jng" alt="Explore page" width="250"/>
+  <img src="screenshots/profile_page.jng" alt="Profile page" width="250"/>
+  <img src="screenshots/saved_article_page.jng" alt="Saved Article page" width="250"/>
+  <img src="screenshots/dark_mode.jng" alt="Dark mode" width="250"/>
 </p>
