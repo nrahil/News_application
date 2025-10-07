@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:news_app/main_screen.dart';
+import 'package:news_app/auth_checker.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
